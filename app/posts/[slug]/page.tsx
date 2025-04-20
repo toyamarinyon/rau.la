@@ -1,6 +1,7 @@
 import { Pump } from "basehub/react-pump";
 import { RichText } from "basehub/react-rich-text";
 import { draftMode as getDraftMode } from "next/headers";
+import Image from "next/image";
 import { notFound } from "next/navigation";
 
 export default async function ({
@@ -27,6 +28,11 @@ export default async function ({
 							_slug: true,
 							_title: true,
 							modifiedAt: true,
+							icon: {
+								width: true,
+								height: true,
+								url: true,
+							},
 							body: {
 								json: {
 									content: true,
@@ -49,7 +55,7 @@ export default async function ({
 				}
 				return (
 					<div className="container mx-auto">
-						<div className="max-w-[940px]">
+						<div className="max-w-[940px] pl-30">
 							<p className="text-gray-500 mb-2">
 								{new Date(post.modifiedAt).toLocaleDateString("en-US", {
 									month: "long",
@@ -57,8 +63,17 @@ export default async function ({
 									year: "numeric",
 								})}
 							</p>
-							<h1 className="font-serif text-5xl/12 mb-6 tracking-wide">
+
+							<h1 className="font-serif text-5xl/12 mb-6 tracking-wide relative">
 								{post._title}
+
+								<Image
+									src={post.icon.url}
+									width={post.icon.width}
+									height={post.icon.height}
+									alt="blog icon"
+									className="size-20 absolute top-0 -left-24"
+								/>
 							</h1>
 							<div className="markdown mb-36">
 								<RichText>{post.body.json.content}</RichText>
